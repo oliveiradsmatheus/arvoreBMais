@@ -30,6 +30,13 @@ public class No {
         this.TL = TL;
     }
 
+    public int procurarPosicaoDuplicado(int info) {
+        int pos = 0;
+        while (pos < TL && info > vInfo[pos])
+            pos++;
+        return pos;
+    }
+
     public int procurarPosicao(int info) {
         int pos = 0;
         while (pos < TL && info >= vInfo[pos])

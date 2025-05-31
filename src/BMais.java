@@ -31,9 +31,7 @@ public class BMais {
         int pos;
         boolean flag = false;
         while (no instanceof NoPonteiro && !flag) {
-            pos = no.procurarPosicao(info) - 1;
-            if (pos == -1)
-                pos++;
+            pos = no.procurarPosicaoDuplicado(info);
             if (pos < no.getTL() && (info == no.getvInfo(pos)))
                 flag = true;
             else
@@ -258,11 +256,14 @@ public class BMais {
         No folha = navegarAteFolha(info);
         if (folha != null) {
             int pos = folha.procurarPosicao(info) - 1;
-            if (pos == -1)
-                pos++;
             folha.remanejarExclusao(pos);
             folha.setTL(folha.getTL() - 1);
-            if (pos != 0 && ((NoFolha) folha).getAnt() != null) {
+            if (folha == raiz && raiz.getTL() == 0)
+                raiz = null;
+            else if (folha != raiz && folha.getTL() < (int) Math.ceil((double) No.N / 2) - 1)
+                redistribuirConcatenar(folha);
+            if (pos == 0 && ((NoFolha) folha).getAnt() != null) {
+                folha = navegarAteFolha(info);
                 No noRef = buscarReferencia(info);
                 if (noRef instanceof NoPonteiro) {
                     pos = noRef.procurarPosicao(info) - 1;
@@ -271,10 +272,6 @@ public class BMais {
                     noRef.setvInfo(pos, folha.getvInfo(0));
                 }
             }
-            if (folha == raiz && raiz.getTL() == 0)
-                raiz = null;
-            else if (folha != raiz && folha.getTL() < (int) Math.ceil((double) No.N / 2) - 1)
-                redistribuirConcatenar(folha);
         }
     }
 
@@ -295,7 +292,7 @@ public class BMais {
 
     public void preOrdem(No no, int nivel) {
         if (no != null) {
-            for (int i = 1; i < nivel; i ++)
+            for (int i = 1; i < nivel; i++)
                 System.out.print("\t");
             System.out.print("Nível: " + nivel + "\t[");
             for (int i = 0; i < no.getTL() - 1; i++)
@@ -306,67 +303,4 @@ public class BMais {
                     preOrdem(((NoPonteiro) no).getvLig(i), nivel + 1);
         }
     }
-
-    /*void arvore(Bloco *disco, int end, int nivel, int *vet) {
-        int i = 1, j, k;
-        char espaco[400] = "", traco[10], curva[12], te[12];
-
-        traco[0] = 179;
-        traco[1] = ' ';
-        traco[2] = ' ';
-        traco[3] = ' ';
-        traco[4] = '\0';
-        traco[5] = '\0';
-        curva[0] = 192;
-        curva[1] = 196;
-        curva[2] = 196;
-        curva[3] = ' ';
-        curva[4] = '\0';
-        te[0] = 195;
-        te[1] = 196;
-        te[2] = 196;
-        te[3] = ' ';
-        te[4] = '\0';
-
-        if (disco[disco[end].inode.endDireto[0]].dir.TL == 3)
-            vet[nivel] = 1; // 1 significa o último diretorio!
-        while (i < nivel) {
-            if (vet[i] == 0)
-                strcat(espaco, traco);
-            else
-                strcat(espaco, "    ");
-            i++;
-        }
-        i = 0;
-        while (i < QTDE_INODE_DIRETO && disco[end].inode.endDireto[i] != endNulo()) {
-            for (j = 2; j < disco[disco[end].inode.endDireto[i]].dir.TL; j++) {
-                k = nivel * 4 - 4;
-                espaco[k] = '\0';
-                if (j + 1 == disco[disco[end].inode.endDireto[i]].dir.TL && i < QTDE_INODE_DIRETO && disco[end].inode.
-                        endDireto[i + 1] == endNulo()) {
-                    vet[nivel] = 1;
-                    strcat(espaco, curva);
-                } else
-                    strcat(espaco, te);
-                printf("%s", espaco);
-                if (disco[disco[disco[end].inode.endDireto[i]].dir.arquivo[j].endInode].inode.permissao[0] == 'd')
-                    printf(AZUL);
-                else if (disco[disco[disco[end].inode.endDireto[i]].dir.arquivo[j].endInode].inode.permissao[0] == 'l')
-                    printf(CIANO);
-                printf("%s\n%s", disco[disco[end].inode.endDireto[i]].dir.arquivo[j].nome, RESET);
-                arvore(disco, disco[disco[end].inode.endDireto[i]].dir.arquivo[j].endInode, nivel + 1, vet);
-            }
-            i++;
-        }
-    }
-
-    void exibirArvore(Bloco *disco, int raiz) {
-        int i, vet[100];
-
-        vet[0] = 1;
-        for (i = 1; i < 100; i++)
-            vet[i] = 0;
-        printf("/.\n");
-        arvore(disco, raiz, 1, vet);
-    }*/
 }
