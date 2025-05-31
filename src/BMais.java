@@ -267,8 +267,6 @@ public class BMais {
                 No noRef = buscarReferencia(info);
                 if (noRef instanceof NoPonteiro) {
                     pos = noRef.procurarPosicao(info) - 1;
-                    if (pos == -1)
-                        pos++;
                     noRef.setvInfo(pos, folha.getvInfo(0));
                 }
             }
