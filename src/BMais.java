@@ -284,6 +284,10 @@ public class BMais {
         }
     }
 
+    public void emOrdem() {
+        emOrdem(raiz, 1);
+    }
+
     public void exibirPorNivel() {
         preOrdem(raiz, 1);
     }
@@ -299,6 +303,18 @@ public class BMais {
             if (no instanceof NoPonteiro)
                 for (int i = 0; i <= no.getTL(); i++)
                     preOrdem(((NoPonteiro) no).getvLig(i), nivel + 1);
+        }
+    }
+
+    public void emOrdem(No no, int nivel) {
+        if (no != null) {
+            for (int i = 0; i < no.getTL(); i++) {
+                if (no instanceof NoPonteiro)
+                    emOrdem(((NoPonteiro) no).getvLig(i), nivel + 1);
+                System.out.println("Nível " + nivel + ": " + no.getvInfo(i));
+            }
+            if (no instanceof NoPonteiro)
+                emOrdem(((NoPonteiro) no).getvLig(no.getTL()), nivel + 1);
         }
     }
 }

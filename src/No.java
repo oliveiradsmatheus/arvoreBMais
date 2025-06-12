@@ -1,5 +1,5 @@
 public class No {
-    public static final int N = 5;
+    public static final int N = 3;
     private int[] vInfo;
     private int TL;
 
@@ -54,4 +54,3 @@ public class No {
             vInfo[i] = vInfo[i + 1];
     }
 }
-
